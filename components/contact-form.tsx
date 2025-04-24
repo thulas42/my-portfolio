@@ -6,20 +6,68 @@ import { motion } from 'framer-motion';
 
 export const ContactForm = () => {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  
+  const validateForm = (formData: FormData): boolean => {
+    const newErrors = {
+      name: '',
+      email: '',
+      message: ''
+    };
+    let isValid = true;
+    
+    // Name validation
+    const name = formData.get('from_name') as string;
+    if (!name || name.trim().length < 2) {
+      newErrors.name = 'Name must be at least 2 characters';
+      isValid = false;
+    }
+    
+    // Email validation
+    const email = formData.get('from_email') as string;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      newErrors.email = 'Please enter a valid email address';
+      isValid = false;
+    }
+    
+    // Message validation
+    const message = formData.get('message') as string;
+    if (!message || message.trim().length < 10) {
+      newErrors.message = 'Message must be at least 10 characters';
+      isValid = false;
+    }
+    
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    const formData = new FormData(e.currentTarget);
+    if (!validateForm(formData)) {
+      return;
+    }
+    
     setStatus('sending');
 
     try {
+      // Send email with EmailJS - this will trigger the auto-reply if configured in EmailJS
       await emailjs.sendForm(
-        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
-        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+        'service_g13p4xb', 
+        'template_cpxwhoc',
         e.currentTarget,
-        'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
+        '6HbvE_Db3868FNRtP'
       );
+      
       setStatus('sent');
       (e.target as HTMLFormElement).reset();
+      setErrors({ name: '', email: '', message: '' });
     } catch (error) {
       console.error('Error sending email:', error);
       setStatus('error');
@@ -44,8 +92,9 @@ export const ContactForm = () => {
               id="name"
               name="from_name"
               required
-              className="w-full p-3 rounded bg-dark-900 border border-primary/20 text-light focus:border-primary focus:outline-none"
+              className="w-full p-3 rounded bg-white border border-primary/20 text-dark focus:border-primary focus:outline-none"
             />
+            {errors.name && <p className="mt-1 text-red-500 text-sm">{errors.name}</p>}
           </div>
           
           <div className="mb-6">
@@ -55,9 +104,13 @@ export const ContactForm = () => {
               id="email"
               name="from_email"
               required
-              className="w-full p-3 rounded bg-dark-900 border border-primary/20 text-light focus:border-primary focus:outline-none"
+              className="w-full p-3 rounded bg-white border border-primary/20 text-dark focus:border-primary focus:outline-none"
             />
+            {errors.email && <p className="mt-1 text-red-500 text-sm">{errors.email}</p>}
           </div>
+          
+          <input type="hidden" name="to_email" value="thulanizondo42@gmail.com" />
+          <input type="hidden" name="reply_to" value="" />
           
           <div className="mb-6">
             <label htmlFor="message" className="block text-light mb-2">Message</label>
@@ -66,8 +119,9 @@ export const ContactForm = () => {
               name="message"
               required
               rows={4}
-              className="w-full p-3 rounded bg-dark-900 border border-primary/20 text-light focus:border-primary focus:outline-none"
+              className="w-full p-3 rounded bg-white border border-primary/20 text-dark focus:border-primary focus:outline-none"
             />
+            {errors.message && <p className="mt-1 text-red-500 text-sm">{errors.message}</p>}
           </div>
 
           <button
