@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #00f3ff;
+  --secondary: #4a00ff;
+  --dark: #0a0a1a;
+  --light: #ffffff;
+}
+
+/* Custom base styles */
+@layer base {
+  body {
+    @apply bg-dark text-light;
+  }
+  
+  h1, h2, h3 {
+    @apply font-bold;
+  }
+}
+
+/* Custom components */
+@layer components {
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+  
+  .skill-card {
+    @apply p-8 rounded-lg border border-primary/20 bg-dark-800;
+  }
+}
+
+/* Animations */
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+} 

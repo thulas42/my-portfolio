@@ -1,0 +1,80 @@
+:root {
+    --primary: #00f3ff;
+    --secondary: #4a00ff;
+    --dark: #0a0a1a;
+    --light: #ffffff;
+}
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--dark);
+    color: var(--light);
+    line-height: 1.6;
+}
+
+.hero {
+    min-height: 100vh;
+    background: linear-gradient(45deg, var(--dark), #1a1a2e);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.gradient-text {
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 4rem;
+    animation: gradient 5s ease infinite;
+}
+
+.skill-card.highlight {
+    border: 2px solid var(--primary);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 4px;
+    background: var(--primary);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.timeline-item:nth-child(odd) .timeline-content {
+    margin-left: auto;
+    text-align: right;
+}
+
+.contact-form input, 
+.contact-form textarea {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--primary);
+    color: var(--light);
+    transition: all 0.3s ease;
+}
+
+.tech-stack i {
+    font-size: 3rem;
+    margin: 0 1rem;
+    color: var(--primary);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@media (max-width: 768px) {
+    .timeline::before {
+        left: 20px;
+    }
+} 
