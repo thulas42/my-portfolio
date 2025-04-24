@@ -77,7 +77,6 @@ export const ContactForm = () => {
   return (
     <section className="py-20 px-4">
       <div className="container mx-auto max-w-2xl">
-        <h2 className="text-4xl font-bold text-center mb-12">Let's Connect</h2>
         <motion.form
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
